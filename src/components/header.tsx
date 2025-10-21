@@ -40,7 +40,7 @@ export const Header = () => {
               aria-label="На главную"
             >
               <img
-                src="/logo.jpg"
+                src="/logo.JPG"
                 alt="Логотип"
                 width={220}
                 height={60}
