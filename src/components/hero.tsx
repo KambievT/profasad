@@ -6,7 +6,7 @@ export const Hero = () => {
   return (
     <section className="relative h-[70vh] min-h-[520px] w-full overflow-hidden">
       <motion.img
-        src="./public/bg-hero.jpeg"
+        src="/bg-hero.jpeg"
         alt="Фоновое изображение дома"
         className="absolute inset-0 h-full w-full object-cover"
         loading="eager"

@@ -29,7 +29,7 @@ export const AboutSection = () => {
           >
             <div className="relative overflow-hidden rounded-2xl border shadow-sm bg-muted">
               <img
-                src="./public/company-fon.jpg"
+                src="/company-fon.jpg"
                 alt="Команда и производство"
                 className="w-full h-72 sm:h-80 lg:h-[420px] object-cover"
                 loading="lazy"

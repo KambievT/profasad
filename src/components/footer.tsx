@@ -13,7 +13,7 @@ export const Footer = () => {
             className="space-y-3"
           >
             <img
-                src="./public/logo.jpg"
+                src="/logo.jpg"
                 alt="Логотип"
                 width={220}
                 height={60}
