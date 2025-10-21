@@ -5,12 +5,6 @@ import { motion } from "framer-motion"
 export const CtaWhatsappSection = () => {
   return (
     <section id="contacts" className="py-16 sm:py-24 bg-foreground text-white relative overflow-hidden">
-      <svg className="absolute top-0 left-0 w-full h-24 text-background" viewBox="0 0 1200 120" preserveAspectRatio="none" aria-hidden="true">
-        <path d="M0,0 C110,90 420,110 600,75 C790,45 1020,85 1200,55 L1200,0 L0,0 Z" fill="currentColor" />
-      </svg>
-      <svg className="absolute top-0 left-0 w-full h-24 text-background/60" viewBox="0 0 1200 120" preserveAspectRatio="none" aria-hidden="true">
-        <path d="M0,0 C140,90 420,110 610,82 C790,60 1010,90 1200,70 L1200,0 L0,0 Z" fill="currentColor" />
-      </svg>
       <div className="absolute top-[18px] left-0 w-full h-6 bg-black/10 blur-xl opacity-30" aria-hidden="true" />
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(80%_60%_at_50%_40%,_rgba(255,255,255,0.1),_transparent)]" />
       <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 relative">
@@ -47,13 +41,6 @@ export const CtaWhatsappSection = () => {
           </motion.div>
         </div>
       </div>
-      <svg className="absolute bottom-0 left-0 w-full h-24 text-background" viewBox="0 0 1200 120" preserveAspectRatio="none" aria-hidden="true">
-        <path d="M0,120 C200,80 420,140 610,100 C800,65 1020,115 1200,90 L1200,120 L0,120 Z" fill="currentColor" />
-      </svg>
-      <svg className="absolute bottom-0 left-0 w-full h-24 text-background/60" viewBox="0 0 1200 120" preserveAspectRatio="none" aria-hidden="true">
-        <path d="M0,120 C220,90 430,135 600,105 C780,80 1000,110 1200,100 L1200,120 L0,120 Z" fill="currentColor" />
-      </svg>
-      <div className="absolute bottom-[18px] left-0 w-full h-6 bg-black/10 blur-xl opacity-25" aria-hidden="true" />
     </section>
   )
 }

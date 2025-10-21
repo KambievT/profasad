@@ -36,7 +36,3 @@ export const useFetchProducts = () => {
   return { products, loading, error }
 }
 
-export const extractPrice = (desc: string): string => {
-  const match = desc.match(/(\d[\d\s]*)\s*₽/)
-  return match ? match[1].replace(/\s/g, "") + " ₽" : "Цена по запросу"
-}

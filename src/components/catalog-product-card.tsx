@@ -5,10 +5,16 @@ import type { Product } from "@/hooks/use-fetch-products"
 
 type CatalogProductCardProps = {
   product: Product
-  extractPrice: (desc: string) => string
+  extractPrice: string
 }
 
 export const CatalogProductCard = memo(({ product, extractPrice }: CatalogProductCardProps) => {
+  const  formatPrice = (extractPrice:string) =>{
+  const s = String(extractPrice ?? "").trim();
+  const digits = s.replace(/\D/g, "");
+  return (!digits || parseInt(digits, 10) === 0) ? "Цена по запросу" : s;
+}
+
   return (
     <Card className="h-full overflow-hidden hover:shadow-lg transition-shadow">
       <CardHeader className="pb-4">
@@ -49,7 +55,7 @@ export const CatalogProductCard = memo(({ product, extractPrice }: CatalogProduc
         </div>
         <div className="flex items-center justify-between">
           <div className="text-lg font-bold text-primary">
-            {extractPrice(product.description) || "Цена по запросу"}
+           { formatPrice(extractPrice) }
           </div>
           <a
             href={product.url}

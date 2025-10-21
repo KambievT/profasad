@@ -10,7 +10,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet"
 import { Input } from "@/components/ui/input"
-import { useFetchProducts, extractPrice } from "@/hooks/use-fetch-products"
+import { useFetchProducts } from "@/hooks/use-fetch-products"
 import { usePagination } from "@/hooks/use-pagination"
 import { CatalogProductCard } from "@/components/catalog-product-card"
 
@@ -19,13 +19,11 @@ export const CatalogPage = () => {
   const [search, setSearch] = useState("")
   const [selectedCategory, setSelectedCategory] = useState<string>("all")
 
-  // Получаем уникальные категории
   const categories = useMemo(() => {
     const cats = new Set(products.map((p) => p.category))
     return Array.from(cats).sort()
   }, [products])
 
-  // Фильтрация товаров
   const filteredProducts = useMemo(() => {
     return products.filter((p) => {
       const matchCategory = selectedCategory === "all" || p.category === selectedCategory
@@ -38,7 +36,6 @@ export const CatalogPage = () => {
     })
   }, [products, selectedCategory, search])
 
-  // Пагинация
   const {
     currentPage,
     totalPages,
@@ -95,7 +92,6 @@ export const CatalogPage = () => {
   return (
     <div className="min-h-screen bg-background pt-24 pb-16">
       <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
-        {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
@@ -194,7 +190,7 @@ export const CatalogPage = () => {
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: Math.min(i * 0.02, 0.3), duration: 0.4 }}
                     >
-                      <CatalogProductCard product={product} extractPrice={extractPrice} />
+                      <CatalogProductCard product={product} extractPrice={product.price} />
                     </motion.div>
                   ))}
                 </div>
