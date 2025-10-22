@@ -68,7 +68,7 @@ export const Header = () => {
             </div>
           </div>
 
-          <nav className="hidden md:flex items-center gap-6 text-base font-medium">
+          <nav className="hidden min-[900px]:flex items-center gap-6 text-base font-medium">
             <Link
               to="/"
               className={cn("transition-all", scrolled ? "text-foreground hover:text-accent" : isHomePage ? "text-white hover:text-accent" : "text-foreground hover:text-accent")}
@@ -101,7 +101,7 @@ export const Header = () => {
             </Link>
             <Sheet>
               <SheetTrigger asChild>
-                <Button className="md:hidden" variant="outline" aria-label="Открыть меню">
+                <Button className="min-[900px]:hidden" variant="outline" aria-label="Открыть меню">
                   <MenuIcon/>
                 </Button>
               </SheetTrigger>

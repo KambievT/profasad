@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { motion } from "framer-motion"
 import { ChevronDown } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -45,6 +45,39 @@ export const CatalogPage = () => {
     hasPrevPage,
   } = usePagination(filteredProducts, 24)
 
+  const containerRef = useRef<HTMLDivElement>(null)
+  const asideAnchorRef = useRef<HTMLDivElement>(null)
+  const [containerLeft, setContainerLeft] = useState<number>(0)
+  const [isFixed, setIsFixed] = useState<boolean>(false)
+
+  useEffect(() => {
+    const updatePosition = () => {
+      const anchorRect = asideAnchorRef.current?.getBoundingClientRect()
+      const containerRect = containerRef.current?.getBoundingClientRect()
+      const parentEl = asideAnchorRef.current?.parentElement as HTMLElement | null
+      const gapPx = parentEl ? parseFloat((getComputedStyle(parentEl).columnGap || getComputedStyle(parentEl).gap || '0').toString()) : 0
+      if (anchorRect) {
+        setContainerLeft(anchorRect.left + window.scrollX + (gapPx || 0))
+      } else if (containerRect) {
+        setContainerLeft(containerRect.left + window.scrollX + (gapPx || 0))
+      }
+
+      const topOffset = window.innerWidth >= 1280 ? 96 : 80
+      if (anchorRect) {
+        const anchorTop = anchorRect.top + window.scrollY
+        setIsFixed(window.scrollY + topOffset >= anchorTop)
+      } else {
+        setIsFixed(false)
+      }
+    }
+    updatePosition()
+    window.addEventListener("resize", updatePosition)
+    window.addEventListener("scroll", updatePosition)
+    return () => {
+      window.removeEventListener("resize", updatePosition)
+      window.removeEventListener("scroll", updatePosition)
+    }
+  }, [])
 
   if (loading) {
     return (
@@ -59,7 +92,7 @@ export const CatalogPage = () => {
 
   return (
     <div className="min-h-screen bg-background pt-24 pb-16">
-      <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8" ref={containerRef}>
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
@@ -89,19 +122,27 @@ export const CatalogPage = () => {
         </motion.div>
 
         <div className="flex gap-8">
+          <div
+            ref={asideAnchorRef}
+            className={`hidden lg:block ${isFixed ? 'w-80' : 'w-0'} flex-shrink-0`}
+            aria-hidden
+          />
           <motion.aside
             initial={{ opacity: 0, x: -12 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className="hidden lg:block w-80 flex-shrink-0 sticky top-24 self-start"
+            className={`hidden lg:block w-80 flex-shrink-0 ${isFixed ? 'fixed top-20 xl:top-24 z-20' : ''}`}
+            style={isFixed ? { left: containerLeft } : undefined}
           >
-            <FiltersSidebar
-              selectedCategory={selectedCategory}
-              categories={categories}
-              products={products}
-              onCategorySelect={setSelectedCategory}
-              onReset={resetFilters}
-            />
+            <div className="max-h-[calc(100vh-6rem)] xl:max-h-[calc(100vh-7rem)] overflow-auto pr-2">
+              <FiltersSidebar
+                selectedCategory={selectedCategory}
+                categories={categories}
+                products={products}
+                onCategorySelect={setSelectedCategory}
+                onReset={resetFilters}
+              />
+            </div>
           </motion.aside>
 
           <div className="lg:hidden fixed bottom-6 right-6 z-40">
