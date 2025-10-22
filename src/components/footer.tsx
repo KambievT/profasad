@@ -1,5 +1,6 @@
 import { motion } from "framer-motion"
 import { useGeolocationLabel } from "@/hooks/use-geolocation"
+import { Link } from "react-router-dom"
 
 export const Footer = () => {
   const { label: locationLabel } = useGeolocationLabel()
@@ -36,10 +37,10 @@ export const Footer = () => {
           >
             <div className="text-sm font-semibold mb-3">Каталог</div>
             <ul className="space-y-2 text-sm text-muted-foreground">
-              <li><a className="hover:text-foreground transition-colors" href="/catalog?category=Кровля">Кровля</a></li>
-              <li><a className="hover:text-foreground transition-colors" href="/catalog?category=Фасадные панели">Фасадные панели</a></li>
-              <li><a className="hover:text-foreground transition-colors" href="/catalog?category=Водосток">Водосток</a></li>
-              <li><a className="hover:text-foreground transition-colors" href="/catalog">Весь каталог</a></li>
+              <li><Link className="hover:text-foreground transition-colors" to="/catalog?category=Кровля">Кровля</Link></li>
+              <li><Link className="hover:text-foreground transition-colors" to="/catalog?category=Фасадные панели">Фасадные панели</Link></li>
+              <li><Link className="hover:text-foreground transition-colors" to="/catalog?category=Водосток">Водосток</Link></li>
+              <li><Link className="hover:text-foreground transition-colors" to="/catalog">Весь каталог</Link></li>
             </ul>
           </motion.div>
 
