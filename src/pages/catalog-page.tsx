@@ -18,6 +18,7 @@ export const CatalogPage = () => {
   const { products, loading } = useFetchProducts()
   const [search, setSearch] = useState("")
   const [selectedCategory, setSelectedCategory] = useState<string>("all")
+  const [isSheetOpen, setIsSheetOpen] = useState(false)
 
   // Handle URL parameters for category filtering
   useEffect(() => {
@@ -56,15 +57,18 @@ export const CatalogPage = () => {
     hasPrevPage,
   } = usePagination(filteredProducts, 24)
 
-  const FiltersSidebar = () => (
-    <div className="space-y-6">
+  const FiltersSidebar = ({ onFilterSelect }: { onFilterSelect?: () => void }) => (
+    <div className="space-y-6 px-4 lg:px-0">
       <div>
-        <h3 className="text-lg font-semibold mb-3">Категории</h3>
-        <div className="space-y-2">
+        <h3 className="text-lg font-semibold mb-4">Категории</h3>
+        <div className="space-y-3">
           <Button
             variant={selectedCategory === "all" ? "default" : "ghost"}
-            className="w-full justify-start"
-            onClick={() => setSelectedCategory("all")}
+            className="w-full justify-start h-auto py-3 px-4"
+            onClick={() => {
+              setSelectedCategory("all")
+              onFilterSelect?.()
+            }}
           >
             Все товары ({products.length})
           </Button>
@@ -74,8 +78,11 @@ export const CatalogPage = () => {
               <Button
                 key={cat}
                 variant={selectedCategory === cat ? "default" : "ghost"}
-                className="w-full justify-start text-left"
-                onClick={() => setSelectedCategory(cat)}
+                className="w-full justify-start text-left h-auto py-3 px-4"
+                onClick={() => {
+                  setSelectedCategory(cat)
+                  onFilterSelect?.()
+                }}
               >
                 <span className="truncate">{cat}</span>
                 <span className="ml-auto text-xs opacity-70">({count})</span>
@@ -152,7 +159,7 @@ export const CatalogPage = () => {
           </motion.aside>
 
           <div className="lg:hidden fixed bottom-6 right-6 z-40">
-            <Sheet>
+            <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
               <SheetTrigger asChild>
                 <Button
                   size="lg"
@@ -163,12 +170,12 @@ export const CatalogPage = () => {
                   <ChevronDown className="ml-2 h-4 w-4" />
                 </Button>
               </SheetTrigger>
-              <SheetContent side="left">
-                <SheetHeader>
+              <SheetContent side="left" className="w-80 sm:w-96">
+                <SheetHeader className="pb-4">
                   <SheetTitle>Фильтры</SheetTitle>
                 </SheetHeader>
-                <div className="mt-6">
-                  <FiltersSidebar />
+                <div className="mt-2">
+                  <FiltersSidebar onFilterSelect={() => setIsSheetOpen(false)} />
                 </div>
               </SheetContent>
             </Sheet>

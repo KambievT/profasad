@@ -128,10 +128,10 @@
     scroll-margin-top: 80px; /* header ~64px + gap */
   }
 
-  /* Custom thin orange scrollbar */
+  /* Custom thin orange scrollbar - vertical only */
   ::-webkit-scrollbar {
     width: 6px;
-    height: 6px;
+    height: 0px; /* Hide horizontal scrollbar */
   }
 
   ::-webkit-scrollbar-track {
@@ -151,5 +151,11 @@
   html {
     scrollbar-width: thin;
     scrollbar-color: oklch(0.75 0.18 70) transparent;
+    overflow-x: hidden; /* Hide horizontal scrollbar in Firefox */
+  }
+
+  /* Prevent horizontal overflow */
+  body {
+    overflow-x: hidden;
   }
 }
