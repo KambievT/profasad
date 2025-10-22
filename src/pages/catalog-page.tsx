@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react"
+import { useState, useMemo, useEffect } from "react"
 import { motion } from "framer-motion"
 import { Search, X, ChevronDown, ChevronLeft, ChevronRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -18,6 +18,15 @@ export const CatalogPage = () => {
   const { products, loading } = useFetchProducts()
   const [search, setSearch] = useState("")
   const [selectedCategory, setSelectedCategory] = useState<string>("all")
+
+  // Handle URL parameters for category filtering
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search)
+    const categoryParam = urlParams.get('category')
+    if (categoryParam) {
+      setSelectedCategory(categoryParam)
+    }
+  }, [])
 
   const categories = useMemo(() => {
     const cats = new Set(products.map((p) => p.category))
