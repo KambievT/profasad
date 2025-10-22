@@ -133,7 +133,6 @@ export const CatalogPage = () => {
         </motion.div>
 
         <div className="flex gap-8">
-          {/* Sidebar Desktop */}
           <motion.aside
             initial={{ opacity: 0, x: -12 }}
             animate={{ opacity: 1, x: 0 }}
@@ -143,7 +142,6 @@ export const CatalogPage = () => {
             <FiltersSidebar />
           </motion.aside>
 
-          {/* Mobile Filters Button */}
           <div className="lg:hidden fixed bottom-6 right-6 z-40">
             <Sheet>
               <SheetTrigger asChild>
@@ -167,7 +165,6 @@ export const CatalogPage = () => {
             </Sheet>
           </div>
 
-          {/* Products Grid */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -195,7 +192,6 @@ export const CatalogPage = () => {
                   ))}
                 </div>
 
-                {/* Пагинация */}
                 {totalPages > 1 && (
                   <div className="flex items-center justify-center gap-2 mt-8">
                     <Button

@@ -1,5 +1,15 @@
 import { useCallback, useEffect, useState } from "react"
 
+type GeolocationAddress = {
+  city?: string
+  town?: string
+  village?: string
+  municipality?: string
+  state?: string
+  country?: string
+  [key: string]: string | undefined
+}
+
 type Options = {
   language?: string
   storageKey?: string
@@ -8,7 +18,7 @@ type Options = {
   maximumAgeMs?: number
   endpoint?: string
   enabled?: boolean
-  formatter?: (address: any) => string
+  formatter?: (address: GeolocationAddress) => string
 }
 
 export function useGeolocationLabel(options: Options = {}) {
@@ -28,7 +38,7 @@ export function useGeolocationLabel(options: Options = {}) {
   const [error, setError] = useState<boolean>(false)
 
   const buildLabel = useCallback(
-    (address: any) => {
+    (address: GeolocationAddress) => {
       if (formatter) return formatter(address)
       const a = address || {}
       const city = a.city || a.town || a.village || a.municipality || a.state
@@ -60,7 +70,9 @@ export function useGeolocationLabel(options: Options = {}) {
           setLabel(text)
           try {
             localStorage.setItem(storageKey, text)
-          } catch {}
+          } catch (error) {
+            console.warn('Failed to save location to localStorage:', error)
+          }
           setLoading(false)
         } catch {
           setError(true)
@@ -83,7 +95,9 @@ export function useGeolocationLabel(options: Options = {}) {
         setLabel(cached)
         return
       }
-    } catch {}
+    } catch (error) {
+      console.warn('Failed to read location from localStorage:', error)
+    }
     detect()
   }, [detect, enabled, storageKey])
 

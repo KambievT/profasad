@@ -3,14 +3,13 @@ import { motion, AnimatePresence } from "framer-motion"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Link } from "react-router-dom"
-import { useFetchProducts, extractPrice } from "@/hooks/use-fetch-products"
+import { useFetchProducts } from "@/hooks/use-fetch-products"
 import { useCarousel } from "@/hooks/use-carousel"
-import { ProductCard } from "@/components/product-card"
+import { CatalogProductCard } from "./catalog-product-card"
 
 export const PopularProductsSection = () => {
   const { products: allProducts, loading } = useFetchProducts()
 
-  // Берём первые 10 товаров
   const products = useMemo(() => {
     return allProducts
       .filter((p) => p.name && p.description)
@@ -19,7 +18,6 @@ export const PopularProductsSection = () => {
 
   const { currentIndex, goToPrevious, goToNext, goToIndex } = useCarousel(products.length, 5000)
 
-  // Показываем 3 товара на десктопе, 2 на планшете, 1 на мобилке
   const getVisibleProducts = () => {
     const screenWidth = typeof window !== "undefined" ? window.innerWidth : 1024
     let itemsToShow = 1
@@ -84,7 +82,7 @@ export const PopularProductsSection = () => {
                   exit={{ opacity: 0, x: -20 }}
                   transition={{ duration: 0.4, delay: i * 0.1 }}
                 >
-                  <ProductCard product={product} extractPrice={extractPrice} />
+                  <CatalogProductCard product={product} extractPrice={product.price} />
                 </motion.div>
               ))}
             </AnimatePresence>

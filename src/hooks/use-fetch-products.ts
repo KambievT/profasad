@@ -36,3 +36,7 @@ export const useFetchProducts = () => {
   return { products, loading, error }
 }
 
+export const extractPrice = (price: string | number) => {
+  if (price === "0" || price === 0) return "Цена по запросу"
+  return `${price} ₽`
+}

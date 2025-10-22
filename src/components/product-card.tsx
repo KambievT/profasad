@@ -9,6 +9,11 @@ type ProductCardProps = {
 }
 
 export const ProductCard = memo(({ product, extractPrice }: ProductCardProps) => {
+    const  formatPrice = (extractPrice:string) =>{
+  const s = String(extractPrice ?? "").trim();
+  const digits = s.replace(/\D/g, "");
+  return (!digits || parseInt(digits, 10) === 0) ? "Цена по запросу" : s;
+}
   return (
     <Card className="h-full overflow-hidden hover:shadow-lg transition-shadow bg-white">
       <CardContent className="p-4">
@@ -45,7 +50,7 @@ export const ProductCard = memo(({ product, extractPrice }: ProductCardProps) =>
         
         <div className="flex items-center justify-between mb-3">
           <div className="text-xl font-bold text-gray-900">
-            {extractPrice(product.description)}
+          { formatPrice(extractPrice) }
           </div>
           <Button size="sm">
             Подробнее
