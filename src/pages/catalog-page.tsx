@@ -1,6 +1,6 @@
-import { useState, useMemo, useEffect } from "react"
+import { useState } from "react"
 import { motion } from "framer-motion"
-import { Search, X, ChevronDown, ChevronLeft, ChevronRight } from "lucide-react"
+import { ChevronDown } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
   Sheet,
@@ -9,41 +9,30 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet"
-import { Input } from "@/components/ui/input"
 import { useFetchProducts } from "@/hooks/use-fetch-products"
+import { useCatalogFilters } from "@/hooks/use-catalog-filters"
+import { useUrlParams } from "@/hooks/use-url-params"
 import { usePagination } from "@/hooks/use-pagination"
 import { CatalogProductCard } from "@/components/catalog-product-card"
+import { FiltersSidebar } from "@/components/filters-sidebar"
+import { SearchInput } from "@/components/search-input"
+import { PaginationControls } from "@/components/pagination-controls"
 
 export const CatalogPage = () => {
   const { products, loading } = useFetchProducts()
-  const [search, setSearch] = useState("")
-  const [selectedCategory, setSelectedCategory] = useState<string>("all")
   const [isSheetOpen, setIsSheetOpen] = useState(false)
+  
+  const {
+    search,
+    setSearch,
+    selectedCategory,
+    setSelectedCategory,
+    categories,
+    resetFilters,
+    filteredProducts
+  } = useCatalogFilters(products)
 
-  useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search)
-    const categoryParam = urlParams.get('category')
-    if (categoryParam) {
-      setSelectedCategory(categoryParam)
-    }
-  }, [])
-
-  const categories = useMemo(() => {
-    const cats = new Set(products.map((p) => p.category))
-    return Array.from(cats).sort()
-  }, [products])
-
-  const filteredProducts = useMemo(() => {
-    return products.filter((p) => {
-      const matchCategory = selectedCategory === "all" || p.category === selectedCategory
-      const matchSearch =
-        search === "" ||
-        p.name.toLowerCase().includes(search.toLowerCase()) ||
-        p.category.toLowerCase().includes(search.toLowerCase()) ||
-        p.description.toLowerCase().includes(search.toLowerCase())
-      return matchCategory && matchSearch
-    })
-  }, [products, selectedCategory, search])
+  useUrlParams(setSelectedCategory)
 
   const {
     currentPage,
@@ -56,42 +45,6 @@ export const CatalogPage = () => {
     hasPrevPage,
   } = usePagination(filteredProducts, 24)
 
-  const FiltersSidebar = ({ onFilterSelect }: { onFilterSelect?: () => void }) => (
-    <div className="space-y-6 px-4 lg:px-0">
-      <div>
-        <h3 className="text-lg font-semibold mb-4">Категории</h3>
-        <div className="space-y-3">
-          <Button
-            variant={selectedCategory === "all" ? "default" : "ghost"}
-            className="w-full justify-start h-auto py-3 px-4"
-            onClick={() => {
-              setSelectedCategory("all")
-              onFilterSelect?.()
-            }}
-          >
-            Все товары ({products.length})
-          </Button>
-          {categories.map((cat) => {
-            const count = products.filter((p) => p.category === cat).length
-            return (
-              <Button
-                key={cat}
-                variant={selectedCategory === cat ? "default" : "ghost"}
-                className="w-full justify-start text-left h-auto py-3 px-4"
-                onClick={() => {
-                  setSelectedCategory(cat)
-                  onFilterSelect?.()
-                }}
-              >
-                <span className="truncate">{cat}</span>
-                <span className="ml-auto text-xs opacity-70">({count})</span>
-              </Button>
-            )
-          })}
-        </div>
-      </div>
-    </div>
-  )
 
   if (loading) {
     return (
@@ -128,23 +81,11 @@ export const CatalogPage = () => {
           transition={{ duration: 0.5, delay: 0.1 }}
           className="mb-6"
         >
-          <div className="relative max-w-md">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <Input
-              placeholder="Поиск по названию, категории..."
-              value={search}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearch(e.target.value)}
-              className="pl-10 pr-10"
-            />
-            {search && (
-              <button
-                onClick={() => setSearch("")}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
-              >
-                <X className="h-4 w-4" />
-              </button>
-            )}
-          </div>
+          <SearchInput
+            value={search}
+            onChange={setSearch}
+            placeholder="Поиск по названию, категории..."
+          />
         </motion.div>
 
         <div className="flex gap-8">
@@ -152,9 +93,15 @@ export const CatalogPage = () => {
             initial={{ opacity: 0, x: -12 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className="hidden lg:block w-64 flex-shrink-0 sticky top-24 self-start"
+            className="hidden lg:block w-80 flex-shrink-0 sticky top-24 self-start"
           >
-            <FiltersSidebar />
+            <FiltersSidebar
+              selectedCategory={selectedCategory}
+              categories={categories}
+              products={products}
+              onCategorySelect={setSelectedCategory}
+              onReset={resetFilters}
+            />
           </motion.aside>
 
           <div className="lg:hidden fixed bottom-6 right-6 z-40">
@@ -174,7 +121,14 @@ export const CatalogPage = () => {
                   <SheetTitle>Фильтры</SheetTitle>
                 </SheetHeader>
                 <div className="mt-2">
-                  <FiltersSidebar onFilterSelect={() => setIsSheetOpen(false)} />
+                  <FiltersSidebar
+                    selectedCategory={selectedCategory}
+                    categories={categories}
+                    products={products}
+                    onCategorySelect={setSelectedCategory}
+                    onReset={resetFilters}
+                    onFilterSelect={() => setIsSheetOpen(false)}
+                  />
                 </div>
               </SheetContent>
             </Sheet>
@@ -207,56 +161,15 @@ export const CatalogPage = () => {
                   ))}
                 </div>
 
-                {totalPages > 1 && (
-                  <div className="flex items-center justify-center gap-2 mt-8">
-                    <Button
-                      variant="outline"
-                      size="icon"
-                      onClick={prevPage}
-                      disabled={!hasPrevPage}
-                      className="rounded-full"
-                    >
-                      <ChevronLeft className="h-4 w-4" />
-                    </Button>
-                    
-                    <div className="flex gap-1">
-                      {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
-                        let pageNum: number
-                        if (totalPages <= 5) {
-                          pageNum = i + 1
-                        } else if (currentPage <= 3) {
-                          pageNum = i + 1
-                        } else if (currentPage >= totalPages - 2) {
-                          pageNum = totalPages - 4 + i
-                        } else {
-                          pageNum = currentPage - 2 + i
-                        }
-                        
-                        return (
-                          <Button
-                            key={pageNum}
-                            variant={currentPage === pageNum ? "default" : "outline"}
-                            size="icon"
-                            onClick={() => goToPage(pageNum)}
-                            className="rounded-full min-w-10"
-                          >
-                            {pageNum}
-                          </Button>
-                        )
-                      })}
-                    </div>
-
-                    <Button
-                      variant="outline"
-                      size="icon"
-                      onClick={nextPage}
-                      disabled={!hasNextPage}
-                      className="rounded-full"
-                    >
-                      <ChevronRight className="h-4 w-4" />
-                    </Button>
-                  </div>
-                )}
+                <PaginationControls
+                  currentPage={currentPage}
+                  totalPages={totalPages}
+                  onPrevPage={prevPage}
+                  onNextPage={nextPage}
+                  onGoToPage={goToPage}
+                  hasPrevPage={hasPrevPage}
+                  hasNextPage={hasNextPage}
+                />
               </>
             )}
           </motion.div>
