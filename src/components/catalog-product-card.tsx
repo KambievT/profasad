@@ -57,16 +57,9 @@ export const CatalogProductCard = memo(({ product, extractPrice }: CatalogProduc
           <div className="text-lg font-bold text-primary">
            { formatPrice(extractPrice) }
           </div>
-          <a
-            href={product.url}
-            target="_blank"
-            rel="noreferrer"
-            className="inline-block"
-          >
-            <Button size="sm" className="rounded-full">
-              Подробнее
-            </Button>
-          </a>
+          <Button size="sm" className="rounded-full">
+            Подробнее
+          </Button>
         </div>
       </CardContent>
     </Card>
