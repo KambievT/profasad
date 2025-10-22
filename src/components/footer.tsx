@@ -1,10 +1,13 @@
 import { motion } from "framer-motion"
+import { useGeolocationLabel } from "@/hooks/use-geolocation"
 
 export const Footer = () => {
+  const { label: locationLabel } = useGeolocationLabel()
+  
   return (
     <footer className="border-t bg-background">
       <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 py-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 py-10">
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -33,10 +36,10 @@ export const Footer = () => {
           >
             <div className="text-sm font-semibold mb-3">Каталог</div>
             <ul className="space-y-2 text-sm text-muted-foreground">
-              <li><a className="hover:text-foreground" href="#">Кровля</a></li>
-              <li><a className="hover:text-foreground" href="#">Фасады</a></li>
-              <li><a className="hover:text-foreground" href="#">Заборы</a></li>
-              <li><a className="hover:text-foreground" href="#">Водостоки</a></li>
+              <li><a className="hover:text-foreground transition-colors" href="/catalog?category=Кровля">Кровля</a></li>
+              <li><a className="hover:text-foreground transition-colors" href="/catalog?category=Фасадные панели">Фасадные панели</a></li>
+              <li><a className="hover:text-foreground transition-colors" href="/catalog?category=Водосток">Водосток</a></li>
+              <li><a className="hover:text-foreground transition-colors" href="/catalog">Весь каталог</a></li>
             </ul>
           </motion.div>
 
@@ -46,36 +49,16 @@ export const Footer = () => {
             viewport={{ amount: 0.2 }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
-            <div className="text-sm font-semibold mb-3">Сервисы</div>
-            <ul className="space-y-2 text-sm text-muted-foreground">
-              <li><a className="hover:text-foreground" href="#">Калькуляторы</a></li>
-              <li><a className="hover:text-foreground" href="#">Подбор цвета</a></li>
-              <li><a className="hover:text-foreground" href="#">Доставка</a></li>
-              <li><a className="hover:text-foreground" href="#">Гарантия</a></li>
-            </ul>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ amount: 0.2 }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-          >
             <div className="text-sm font-semibold mb-3">Контакты</div>
             <ul className="space-y-2 text-sm text-muted-foreground">
               <li>+7 (900) 000-00-00</li>
-              <li>info@example.ru</li>
-              <li>Россия, Москва</li>
+              <li>{locationLabel || "Ваше местоположение"}</li>
             </ul>
           </motion.div>
         </div>
 
-        <div className="border-t py-6 text-xs sm:text-sm text-muted-foreground flex flex-col sm:flex-row items-center justify-between gap-3">
+        <div className="border-t py-6 text-xs sm:text-sm text-muted-foreground text-center">
           <div>© {new Date().getFullYear()} Компания. Все права защищены.</div>
-          <div className="flex items-center gap-4">
-            <a href="#" className="hover:text-foreground">Политика конфиденциальности</a>
-            <a href="#" className="hover:text-foreground">Пользовательское соглашение</a>
-          </div>
         </div>
       </div>
     </footer>
