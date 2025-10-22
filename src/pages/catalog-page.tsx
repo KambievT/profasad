@@ -20,7 +20,6 @@ export const CatalogPage = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>("all")
   const [isSheetOpen, setIsSheetOpen] = useState(false)
 
-  // Handle URL parameters for category filtering
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search)
     const categoryParam = urlParams.get('category')

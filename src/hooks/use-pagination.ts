@@ -11,7 +11,6 @@ export const usePagination = <T,>(items: T[], itemsPerPage: number = 24) => {
 
   const totalPages = Math.ceil(items.length / itemsPerPage)
 
-  // Сброс на первую страницу при изменении items
   useEffect(() => {
     setCurrentPage(1)
   }, [items.length])
