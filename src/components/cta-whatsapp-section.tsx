@@ -34,7 +34,7 @@ export const CtaWhatsappSection = () => {
             transition={{ duration: 0.6, delay: 0.2 }}
           >
             <motion.a 
-              href="https://wa.me/79000000000" 
+              href="https://wa.me/79527263759" 
               target="_blank" 
               rel="noreferrer"
               whileHover={{ scale: 1.05, y: -2 }}

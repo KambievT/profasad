@@ -96,9 +96,9 @@ export const Header = () => {
           </nav>
 
           <div className="flex items-center gap-3">
-            <Link to="/catalog" className="hidden sm:inline-flex">
+            <a href="https://wa.me/79527263759" target="_blank" rel="noreferrer" className="hidden sm:inline-flex">
               <Button variant="outline" className="bg-accent text-accent-foreground border-none cursor-pointer hover:bg-accent/90">Написать в Whatsapp</Button>
-            </Link>
+            </a>
             <Sheet>
               <SheetTrigger asChild>
                 <Button className="min-[900px]:hidden" variant="outline" aria-label="Открыть меню">
@@ -125,7 +125,7 @@ export const Header = () => {
                     </SheetClose>
                   </nav>
                   <div className="h-px bg-border" />
-                  <a href="https://wa.me/79000000000" target="_blank" rel="noreferrer" className="block">
+                  <a href="https://wa.me/79527263759" target="_blank" rel="noreferrer" className="block">
                     <Button className="w-full justify-center rounded-full bg-primary text-primary-foreground hover:bg-primary/90">
                       <MessageCircle className="h-5 w-5 mr-2" /> Написать в WhatsApp
                     </Button>

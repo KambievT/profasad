@@ -48,8 +48,10 @@ export const Hero = () => {
             <Link to="/catalog">
               <Button size="lg" className="rounded-full px-6 sm:px-7 cursor-pointer hover:scale-105">Смотреть каталог</Button>
             </Link>
-            <a href="#contacts">
-              <Button size="lg" variant="outline" className="rounded-full px-6 sm:px-7 cursor-pointer border-white text-foreground hover:bg-white hover:text-black hover:scale-105">Связаться с нами</Button>
+            <a href="https://wa.me/79527263759" target="_blank" rel="noreferrer">
+              <Button size="lg" variant="outline" className="rounded-full px-6 sm:px-7 cursor-pointer border-white text-foreground hover:bg-white hover:text-black hover:scale-105">
+                Связаться с нами
+              </Button>
             </a>
           </motion.div>
         </motion.div>

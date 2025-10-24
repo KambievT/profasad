@@ -52,14 +52,15 @@ export const Footer = () => {
           >
             <div className="text-sm font-semibold mb-3">Контакты</div>
             <ul className="space-y-2 text-sm text-muted-foreground">
-              <li>+7 (900) 000-00-00</li>
+              <li>+7 952 726‑37‑59</li>
+              <li><a href="mailto:fasadproekb@yandex.ru" className="hover:text-foreground transition-colors">fasadproekb@yandex.ru</a></li>
               <li>{locationLabel || "Ваше местоположение"}</li>
             </ul>
           </motion.div>
         </div>
 
         <div className="border-t py-6 text-xs sm:text-sm text-muted-foreground text-center">
-          <div>© {new Date().getFullYear()} Компания. Все права защищены.</div>
+          <div>© {new Date().getFullYear()} PROФасад. Все права защищены.</div>
         </div>
       </div>
     </footer>
